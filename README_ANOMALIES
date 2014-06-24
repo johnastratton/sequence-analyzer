@@ -1,0 +1,53 @@
+sequence_anomalies.pl
+Analyzes sequences of numbers, and reports anomalies from a standard 
+incrementing sequence.  
+
+Usage: 
+sequence_anomalies.pl <file containing sequence> <Display format string>
+
+Reads contents from argument 1, and attempts to interpret the contents 
+as a list of incrementing numbers, one on each line, displaying deviations 
+from the expected sequence.  The first detected entry is interpretated as the 
+starting point of the sequence.  The format string is the 
+preferred format for printing numbers in the report for this file. 
+
+Requirements:
+* File path and format string arguments are both required.
+  - usage message printed in error case
+* File contents are assumed to be in ascending sorted order
+  - Keep in mind that the sort utility sorts lexographically by default: you 
+    probably will want to use the -n flag when preparing input
+
+Features:
+* Matches first number on each line, ignoring other characters
+  - In herbarium specimens, accession numbers often come with an 
+    herbarium code prepended.  This feature ignores the herbarium code, but 
+    requires that each line be treated as its own number.
+* Formats output according to command-line argument
+  - Because herbarium codes are stripped out for numerical analysis, this 
+    feature provides the user with the mechanism to add them (or any other 
+    preferred formatting) back in.  For well-defined results, the format 
+    string must contain only one integer placeholder (%d variant) and no 
+    other placeholders. When typing in a terminal, enclosing quotes are 
+    recommended.
+* Detects missing numbers and ranges
+  - Single missing numbers are listed as "Missing: <formatted number>"
+  - Multiple missing numbers in a row are listed as a single missing range
+* Detects duplicate entries
+  - As input is assumed to be sorted, entries can not be out of order, but 
+    duplicates are detected and reported, with a note of the number of 
+    identical entires seen for that number.
+* Detects multi-entry numbers with minor differentiators
+  - Some herbarium entries contain multiple parts, typically in the format 
+    N.1, N.2, N.3 for number N.  These are considered "normal" rather than 
+    "aberrant" in many cases, but would be seen as duplicates without this 
+    feature (because N is the matched number for each line.)  This feature 
+    separates multi-entry items out with the prefix "Multi-entry:", and 
+    adds the comment "(with noncontiguous minors)" if the minor numbers 
+    are not themselves an integer sequence starting from 1.
+* Missing number total
+  - At the end of processing, the script will print the total number of 
+    entries that were missing from the natural sequence, with the prefix 
+    "Total missing: ".  The number here is not formatted with the command 
+    line format argument.
+

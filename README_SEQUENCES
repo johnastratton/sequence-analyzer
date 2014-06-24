@@ -1,0 +1,42 @@
+sequences.pl
+Analyzes sequences of numbers, and reports the detected sequences.
+
+Usage: 
+sequence_anomalies.pl <file containing sequence> <Display format string>
+
+Reads contents from argument 1, and attempts to interpret the contents 
+as a list of incrementing numbers, one on each line, displaying the 
+contents as a compressed set of continuous subsequences.
+The format string is the preferred format for printing numbers in the 
+report for this file. 
+
+Requirements:
+* File path and format string arguments are both required.
+  - usage message printed in error case
+* File contents are assumed to be in ascending sorted order
+  - Keep in mind that the sort utility sorts lexographically by default: you 
+    probably will want to use the -n flag when preparing input
+
+Features:
+* Matches first number on each line, ignoring other characters
+  - In herbarium specimens, accession numbers often come with an 
+    herbarium code prepended.  This feature ignores the herbarium code, but 
+    requires that each line be treated as its own number.
+* Formats output according to command-line argument
+  - Because herbarium codes are stripped out for numerical analysis, this 
+    feature provides the user with the mechanism to add them (or any other 
+    preferred formatting) back in.  For well-defined results, the format 
+    string must contain only one integer placeholder (%d variant) and no 
+    other placeholders. When typing in a terminal, enclosing quotes are 
+    recommended.
+* Duplicate entries are considered the start of a new subsequence.
+  - Output of the format:
+    A - B
+    B - C
+
+      Means that there are two copies of B in the file, one of which 
+    ends a contiguous sequence beginning with A, the other beginning 
+    a contiguous sequence ending at C.  The two sequences are not 
+    combined into a single A - C sequence because of the duplicated 
+    B entry.
+
