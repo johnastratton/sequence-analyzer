@@ -1,3 +1,12 @@
+This project was created to automatically analyze database entries and 
+filesystem contents for herbarium specimens.  Finding the missing numbers 
+in a collection is labor-intensive work to do by hand when there are 
+thousands of entries.  This program works on the assumption that the natural 
+order of things is an ascending sequence of integers.  One of the two 
+included scripts compresses these sequences into ranges that are easier 
+to understand by a person.  The other does the reverse task, and prints 
+deviations from a standard range.
+
 This project is essentially encapsulated in two Perl scripts.  Please 
 see the README files README_ANOMALIES and README_SEQUENCES for more 
 details on each.
